@@ -104,7 +104,20 @@ Resources:
         - Key: Name
           Value: Public subnet 3
 
-
+  EgressOnlyInternetGateway: 
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      Tags: 
+      -Key: name
+      value: project eigw 
+      
+  EgressOnlyInternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      EgressOnlyInternetGatewayId: !Ref EgressOnlyInternetGateway
+      VpcId: !Ref VPC      
+    
+        
   PrivateSubnet1:
     Type: AWS::EC2::Subnet
     Properties:
@@ -141,19 +154,19 @@ Resources:
 
   NatGateway1EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    DependsOn: EgressOnlyInternetGatewayAttachment
     Properties:
       Domain: vpc
 
   NatGateway2EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    DependsOn: EgressOnlyInternetGatewayAttachment
     Properties:
       Domain: vpc
 
   NatGateway3EIP:
     Type: AWS::EC2::EIP
-    DependsOn: InternetGatewayAttachment
+    DependsOn: EgressOnlyInternetGatewayAttachment
     Properties:
       Domain: vpc
 
@@ -174,7 +187,7 @@ Resources:
     Properties:
       AllocationId: !GetAtt NatGateway3EIP.AllocationId
       SubnetId: !Ref PrivateSubnet3
-
+  
 
   PublicRouteTable:
     Type: AWS::EC2::RouteTable
@@ -274,11 +287,6 @@ Resources:
       RouteTableId: !Ref PrivateRouteTable2
       SubnetId: !Ref PrivateSubnet3
 
-
-  EgressOnlyInternetGateway: 
-    Type: AWS::EC2::EgressOnlyInternetGateway
-    Properties: 
-        VpcId: !Ref VPC   
 
 Outputs:
   VPC:
