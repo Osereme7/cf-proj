@@ -1,10 +1,10 @@
 AWS Template Format Version: 2010-09-09 
 
-Description:  this template will create a cloud formation template that will raise vpc with 6 subnets 3 public /23
-3 private /18 with 2 subnets in each AZ, also an ipv6 network must be allocated in each subnet
-NAT gateway (for private subnets)
-Egress only internet gateway (for private subnets)
-Internet gateway (for public subnets)
+#Description:  this template will create a cloud formation template that will raise vpc with 6 subnets 3 public /23
+#3 private /18 with 2 subnets in each AZ, also an ipv6 network must be allocated in each subnet
+#NAT gateway (for private subnets)
+#Egress only internet gateway (for private subnets)
+#Internet gateway (for public subnets)
 
 Parameters:
   EnvironmentName:
@@ -26,7 +26,7 @@ Parameters:
     Type: String
     Default: 10.0.2.0/23
 
-    PublicSubnet3CIDR:
+  PublicSubnet3CIDR:
     Description: Please enter the IP range (CIDR notation) for the public3
     Type: String
     Default: 10.0.3.0/23
@@ -51,7 +51,7 @@ Resources:
   VPC:
     Type: AWS::EC2::VPC
     Properties:
-      CidrBlock: !Ref VpcCIDR:
+      CidrBlock: !Ref VpcCIDR
       EnableDnsSupport: true
       EnableDnsHostnames: true
       Tags:
