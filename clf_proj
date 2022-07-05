@@ -217,8 +217,7 @@ Resources:
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt NatPrivateIP1.AllocationId    
-      SubnetId: 
-        Fn::Importvalue: !sub ${ExportVpcStackName}-Privatesubnet1
+      SubnetId: !Ref PrivateSubnet1
         Tags:
            -Key: name
           Value: Nat gateway private Subnet1
@@ -228,8 +227,7 @@ Resources:
     Type: AWS::EC2::NatGateway
     Properties: 
       AllocationId: !GetAtt NatPrivateIP2.AllocationId
-      SubnetId: 
-        Fn::Importvalue: !sub ${ExportVpcStackName}-Privatesubnet2     
+      SubnetId: !Ref PrivateSubnet2
         Tags:
            -Key: name
           Value: Nat gateway private Subnet2
@@ -239,8 +237,7 @@ Resources:
     Type: AWS::EC2::NatGateway
     Properties: 
       AllocationId: !GetAtt NatPrivateIP3.AllocationId
-      SubnetId: 
-        Fn::Importvalue: !sub ${ExportVpcStackName}-Privatesubnet3  
+      SubnetId: !Ref PrivateSubnet3
         Tags:
            -Key: name
           Value: Nat gateway private Subnet3
