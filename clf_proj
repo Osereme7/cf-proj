@@ -213,7 +213,7 @@ Resources:
          Value: EIP 3           
 
 #NATGATEWAY1
-  NatGateway:
+  NatGateway1:
     Type: AWS::EC2::NatGateway
     Properties:
       AllocationId: !GetAtt NatPrivateIP1.AllocationId    
@@ -223,7 +223,7 @@ Resources:
           Value: Nat gateway private Subnet1
 
 #NATGATEWAY2
-  NatGateway:
+  NatGateway2:
     Type: AWS::EC2::NatGateway
     Properties: 
       AllocationId: !GetAtt NatPrivateIP2.AllocationId
@@ -233,7 +233,7 @@ Resources:
           Value: Nat gateway private Subnet2
     
 #NATGATEWAY3   
-  NatGateway:
+  NatGateway3:
     Type: AWS::EC2::NatGateway
     Properties: 
       AllocationId: !GetAtt NatPrivateIP3.AllocationId
@@ -241,21 +241,58 @@ Resources:
         Tags:
            -Key: name
           Value: Nat gateway private Subnet3
-                    
+
+#EGW1
+ EgressOnlyInternetGateway: 
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      SubnetId: !Ref PrivateSubnet1
+        Tags:
+           -Key: name
+          Value: egw private subnet1
+        VpcId: !Ref VPC     
+
+#EGW2
+ EgressOnlyInternetGateway: 
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      SubnetId: !Ref PrivateSubnet2
+        Tags:
+           -Key: name
+          Value: egw private subnet2
+        VpcId: !Ref VPC     
+
+#EGW3
+ EgressOnlyInternetGateway: 
+    Type: AWS::EC2::EgressOnlyInternetGateway
+    Properties:
+      SubnetId: !Ref PrivateSubnet3
+        Tags:
+           -Key: name
+          Value: egw private subnet3
+        VpcId: !Ref VPC     
 
 #PRIVATE ROUTING
   PrivateRouteTable:
     Type: AWS::EC2::RouteTable
     Properties:
-      VpcId: !Ref PrivateVPC
+      VpcId: !Ref VPC
       
-  PrivateRoute:
+  NATPrivateRoute:
     Type: AWS::EC2::Route
     Properties:
       NatGatewayId: !Ref NatGateway
       RouteTableId: !Ref PrivateRouteTable
       DestinationCidrBlock: 0.0.0.0/0
-     
+
+  EGWPrivateRoute:
+    Type: AWS::EC2::Route
+    Properties:
+      EGWId: !Ref EgressOnlyInternetGateway
+      RouteTableId: !Ref PrivateRouteTable
+      DestinationCidrBlock: 0.0.0.0/0
+           
+
   PrivateSubnet1RouteTableAssociation:
     Type: AWS::EC2::SubnetRouteTableAssociation
     Properties:
